@@ -58,3 +58,52 @@ header.payload.signature
 --> Payload is the user info (authenticated user) that we want to pass to server.
 --> Signature is the combination of header+payload decoded using the a secret.
 
+<h4>OAUTH2</h4>
+It was originally created for authorization between two services.
+The basic concept behind it is when a user is authenticated with service1 and service2 separately, but requires for them to communicate for a purpose.
+the service acting as the host will provide a key for service requiring authorization to perform that action on behalf of the user.
+
+Terminologies:
+Protected Resource: file/object user requires.
+Resource Owner: Entity capable of granting access to a protected resource (User)
+Resource Server: Entity that is holding the protected resource. 
+Client: application making protected resource requests on behalf of resource owner and with its authorization.
+Authorization server: It issues access tokens to client.
+Authorization works with Resource server to authorize the protected resource.
+
+OAuth Flow 1 (Authorization Code Flow)
+1) Resource Owner ----> Client
+2) Client-----> Authorization server 
+3) Authorization server-----> resource owner
+4) resource owner ----> Authorization server
+5) Authorization server--Auth token----> Client
+6) Client---Auth token---> Authorization server
+7) Authorization server---Access token--> Client 
+8) Client ---API call with access token-> Resource owner
+9) Resource owner---Resource--> Client  
+
+
+OAuth Flow 2 (Implicit Flow)
+1) Resource Owner ----> Client
+2) Client-----> Authorization server
+3) Authorization server-----> resource owner
+4) resource owner ----> Authorization server
+5) Authorization server---Access token--> Client
+6) Client ---API call with access token-> Resource owner
+7) Resource owner---Resource--> Client
+- Not as secure (because with access token anyone can access the resource, unlike auth flow where auth token is required to get access token)
+- Primarily used with short-lived access tokens
+- Used with JavaScript apps
+
+OAuth Flow 3 (Client Credentials Flow)
+When the client is well trusted (confidential clients) like auth between microservices.
+1) Microservice 1 --provides special clientid/key-> Auth server
+2) Auth server --Access token--> Microservice 1
+3) Microservice 1 --Access token (with only required access)---> Microservice 2
+4) Microservice 2 ---Resource--> Microserver 1
+
+But recently the use of OAuth2 has been upgraded to be used as an authentication mechanism.
+
+If we have some very well trusted Clients like Google, Facebook, GitHub. Then we can use them as an authenticator for the user.
+Like how we have in most of the websites asking to login using the above accounts credentials to create an account for them
+
